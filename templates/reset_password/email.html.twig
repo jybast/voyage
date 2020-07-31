@@ -1,0 +1,11 @@
+<h1>Bonjour</h1>
+
+<p>
+    Pour changer votre mot de passe, utilisez ce lien :
+    <a href="{{ url('blog_reset_password', {token: resetToken.token}) }}">Changer le mot de passe</a>
+    Ce lien expire dans {{ tokenLifetime|date('g') }} heure(s)..
+</p>
+
+<p>
+    Bien à vous !
+</p>

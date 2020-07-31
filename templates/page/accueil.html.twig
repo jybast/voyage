@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    
+    <div class="row">
+        <div class="col-sm-3 col-lg-3">
+            <p>aside</p>
+            <div class="row">
+                <p>menu contextuel</p>
+                <ul>
+                <li>Liste des articles</li>
+                <li>Liste des catégories</li>
+                <li>Rechercher un article</li>
+                <ul>
+                <li>Par mot clé</li>
+                <li>Par catégorie</li>
+                </ul>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-3 col-lg-8">
+            <h1>Bonjour {% if app.user %}{{ app.user.pseudo }}{% endif %}! ✅</h1>
+            {# Affiche le message de succès après vérification de l'email #}
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% endfor %}
+            {#
+            <h2>Il y a {{ articles | length > 0 ? articles | length ~  'articles disponibles': 'aucun article disponible'}} .</h2>
+            #}
+            <p>Les derniers articles publiés</p>
+
+            La page accueil doit permettre de :
+            <li>Afficher les trois derniers articles publiés</li>
+            <li>Informations sur le site et ses auteurs</li>
+            <li>Donner accès aux infos sur les mentions légales et la RGPD</li>
+                        
+        </div>
+    </div>
+
+{% endblock %}
