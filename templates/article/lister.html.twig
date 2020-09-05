@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des articles{% endblock %}
+
+{% block body %}
+    <h1>Liste des articles</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Sous-titre</th>
+                <th>Slug</th>
+                <th>Publié le</th>
+                <th>Modifié le</th>
+                <th>Valide</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.titre }}</td>
+                <td>{{ article.soustitre }}</td>
+                <td>{{ article.slug }}</td>
+                <td>{{ article.publierAt ? article.publierAt|date('d/m/Y') : '' }}</td>
+                <td>{{ article.modifierAt ? article.modifierAt|date('d/m/Y') : '' }}</td>
+                <td>{{ article.valide ? 'Oui' : 'Non' }}</td>
+                <td>
+                    <a href="{{ path('article_lire', {'id': article.id}) }}">Lire</a>
+                    <a href="{{ path('article_modifier', {'id': article.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Pas encore d'article !</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('article_ajouter') }}">Ajouter un article</a>
+
+    <nav aria-label="Page navigation example">
+        {{ knp_pagination_render(articles, 
+            '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig',
+            {},
+            {
+                'position': 'right',
+                'size': 'small',
+                'rounded': true,
+            } ) 
+        }}
+    </nav>
+{% endblock %}

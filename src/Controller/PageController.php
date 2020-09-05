@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,10 +14,13 @@ class PageController extends AbstractController
     /**
      * @Route("/accueil", name="blog_accueil")
      */
-    public function accueil()
+    public function accueil(ArticleRepository $repository)
     {
+        // récupère les derniers articles publiés
+        $actualites = $repository->findBylastCreated();
+        
         return $this->render('page/accueil.html.twig', [
-            'controller_name' => 'PageController',
+            'actualites' => $actualites
         ]);
     }
 

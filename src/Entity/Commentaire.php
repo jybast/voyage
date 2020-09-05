@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CommentaireRepository;
 use Doctrine\ORM\Mapping as ORM;
+/* Extensions */
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=CommentaireRepository::class)
@@ -24,6 +26,7 @@ class Commentaire
 
     /**
      * @ORM\Column(type="date")
+     * @Gedmo\Timestampable(on="create")
      */
     private $publierAt;
 

@@ -1,0 +1,18 @@
+fm_elfinder:
+    instances:
+        default:
+            locale: 'fr'    # langage
+            editor: ckeditor
+            fullscreen: true 
+
+            connector:
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        # formats d'image autorisés
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        # Interdit tout sauf ce qui est permis au-dessus
+                        upload_deny: ['all']
+                        # la taille max des fichiers, également limitée dans php.ini
+                        upload_max_size: 2M 

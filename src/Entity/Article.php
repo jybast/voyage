@@ -6,6 +6,8 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+/* Extensions */
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -31,23 +33,26 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"titre"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="date")
+     * @Gedmo\Timestampable(on="create")
      */
     private $publierAt;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"titre", "contenu"})
      */
     private $modifierAt;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $valide;
+    private $valide = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
@@ -74,6 +79,11 @@ class Article
      * @ORM\ManyToMany(targetEntity=Categorie::class, mappedBy="article")
      */
     private $categories;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $contenu;
 
     public function __construct()
     {
@@ -270,22 +280,34 @@ class Article
         return $this->categories;
     }
 
-    public function addCategory(Categorie $category): self
+    public function addCategorie(Categorie $categorie): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addArticle($this);
+        if (!$this->categories->contains($categorie)) {
+            $this->categories[] = $categorie;
+            $categorie->addArticle($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Categorie $category): self
+    public function removeCategorie(Categorie $categorie): self
     {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-            $category->removeArticle($this);
+        if ($this->categories->contains($categorie)) {
+            $this->categories->removeElement($categorie);
+            $categorie->removeArticle($this);
         }
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): self
+    {
+        $this->contenu = $contenu;
 
         return $this;
     }

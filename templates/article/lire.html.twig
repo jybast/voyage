@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <h1>Article</h1>
+
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ article.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ article.titre }}</td>
+            </tr>
+            <tr>
+                <th>Soustitre</th>
+                <td>{{ article.soustitre }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ article.slug }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ article.contenu|raw }}</td>
+            </tr>
+            <tr>
+                <th>Publié le</th>
+                <td>{{ article.publierAt ? article.publierAt|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Modifié le</th>
+                <td>{{ article.modifierAt ? article.modifierAt|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Valide</th>
+                <td>{{ article.valide ? 'Oui' : 'Non' }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    
+    <a href="{{ path('article_lister') }}">Retour à la liste</a>
+
+    <a href="{{ path('article_modifier', {'id': article.id}) }}">Modifier l'article</a>
+
+    {{ include('article/_supprimer_form.html.twig') }}
+    </div>
+    <div>
+        <h3>Lire les commentaires</h3>
+        {% for commentaire in commentaires %}
+            <p><i><small> Publié le {{ commentaire.publierAt | date('d/m/Y')}} par {{ commentaire.auteur }} </small></i></p>
+            <p>{{ commentaire.contenu }}</p>
+            
+        {% endfor %}
+    </div>
+    <div>
+        <h3>Ajouter un commentaire</h3>
+        {{ form(form_commentaire) }}
+    </div>
+    <div>
+{% endblock %}
