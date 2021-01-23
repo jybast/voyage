@@ -1,5 +1,7 @@
 <h1>Bonjour</h1>
-
+<div class="logo-container">
+	<img  class="logo" src="{{ asset('assets/img/logo-transparent.png')| imagine_filter('miniature') }}" alt="Logo">
+</div>
 <p>
     Pour changer votre mot de passe, utilisez ce lien :
     <a href="{{ url('blog_reset_password', {token: resetToken.token}) }}">Changer le mot de passe</a>

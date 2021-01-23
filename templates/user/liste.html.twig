@@ -1,0 +1,54 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Liste des abonnés{% endblock %}
+
+{% block body %}
+<div class="container">
+
+
+    <h1>Liste des abonnés</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Rôles</th>
+                <th>Pseudo</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Accrédité</th>
+                <th>Actif</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.pseudo }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
+                <td>{{ user.actif ? 'Oui' : 'Non' }}</td>
+                <td>
+                    <a href="{{ path('user_profil', {'id': user.id}) }}">Voir</a>
+                    <a href="{{ path('user_profil_modifier', {'id': user.id}) }}">Modifier</a>
+                    {% if user.actif == false %}
+                    <a href="{{ path('user_activer', {'id': user.id}) }}">Activer</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_ajouter') }}">Créer un nouvel abonné</a>
+</div>
+{% endblock %}

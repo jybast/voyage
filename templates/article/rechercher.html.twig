@@ -1,0 +1,56 @@
+{% extends 'page.html.twig' %}
+
+{% block title %}Rechercher un article{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="formulaire_conteneur">
+		<h1 class="titre-article">Rechercher un article</h1>
+			<div class="formulaire_masque">
+			<div class="texte-normal"> Rechercher  </div>
+			{{ form(form)}}
+		</div>
+	</div>
+    <hr>
+
+		<div class="row">
+			<div class="card-deck">
+				{% for article in donnees %}
+				
+					<div class="card mb-4">
+						<div class="card-header">
+						<p>Catégorie :</p>
+						<p>
+							{% for categorie in article.categories %}
+								<small>{{ categorie.nom }} </small>
+							{% else %}
+								<small>Aucune catégorie!</small>
+							{% endfor %}
+						</p>
+						</div>
+						<div class="card-body">
+							<img src="{{ asset('assets/img/maroc.jpg') | imagine_filter('vignette')}}"  alt="{{ article.titre }}">
+							<h5 class="card-title">{{ article.titre }}</h5>
+							<p class="card-text">{{ article.contenu | slice(0, 150) | raw  }}</p>
+						</div>
+						<div class="card-footer text-muted">
+							<small>Publié le : {{ article.publierAt | date('d/m/Y') }}</small>
+							<p class="text-muted"><small><a href="{{path('article_lire', {'id': article.id})}}">Lire l'article </a></small></p>
+						</div>	
+					</div>
+
+				{% else %}
+				<div>
+					<h5>Aucun article trouvé !</h5>
+				</div>
+				{% endfor %}
+
+			</div>
+		
+		</div>
+
+   {# <a href="{{ path('article_lister') }}">Retour à la liste</a>#}
+
+   {# {{ include('article/_supprimer_form.html.twig') }} #}
+</div>
+{% endblock %}

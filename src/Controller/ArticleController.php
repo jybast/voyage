@@ -2,18 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Form\ArticleType;
 use App\Entity\Commentaire;
 use App\Form\CategorieType;
 use App\Form\CommentaireType;
+// Nous appelons le bundle KNP Paginator
+use App\Form\ChercheArticleType;
 use App\Repository\ArticleRepository;
 use Knp\Component\Pager\PaginatorInterface; 
 use Symfony\Component\HttpFoundation\Request;
-// Nous appelons le bundle KNP Paginator
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -29,8 +32,8 @@ class ArticleController extends AbstractController
     public function lister(Request $request, ArticleRepository $articleRepository, PaginatorInterface $paginator): Response
     {
         // récupère les articles pour la gestion de la pagination
-        $donnees = $articleRepository->findBy(['valide' => true], [
-             
+        $donnees = $articleRepository->findBy([
+            'valide' => true], [
             'publierAt' => 'desc'
             ]);
         // Mise en place de la pagination
@@ -47,7 +50,7 @@ class ArticleController extends AbstractController
             'articles' => $articles,
         ]);
     }
-
+ 
     /**
      * @Route("/ajouter", name="article_ajouter", methods={"GET","POST"})
      */
@@ -55,39 +58,37 @@ class ArticleController extends AbstractController
     {
         // Nouvelle instance d'article
         $article = new Article();
-
-        // Nouvelle instance de Categorie
-        $categorie = new Categorie();
-
-         // Instance du formulaire pour la categorie
-         $form_categorie = $this->createForm(CategorieType::class, $categorie);
-
-         // Récupère les données passées a la categorie
-         $form_categorie->handleRequest($request);
- 
-         // Traitement du formulaire
-         if($form_categorie->isSubmitted() && $form_categorie->isValid()){
-             // Faire le lien entre le categorie et l'article
-            
-             // Intègre le categorie à la base
-             $em = $this->getDoctrine()->getManager();
-             $em->persist($categorie);
-             $em->flush();
-         }
-
-
-
         // Construction du formulaire
         $form = $this->createForm(ArticleType::class, $article);
-
         // Traitement des informations reçues
         $form->handleRequest($request);
-
+     
         // Traitement du formulaire
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            // On récupère les media transmis
+            $medias = $form->get('media')->getData();
+            // On boucle sur les images
+            foreach($medias as $media)
+            {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $media->guessExtension();
+                // On copie le fichier physique dans le dossier uploads
+                $media->move(
+                    $this->getParameter('media_directory'),
+                    $fichier
+                );
+                // On stocke l'image dans la base de données (son nom)
+                $img = new Media();
+                $img->setNom($fichier);
+                // on passe l'instance du media dans l'article
+                $article->addMedium($img);
 
-            $article->addCategory($categorie);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            // récupère l'auteur
+            $article->setAuteur($this->getUser());
 
             $entityManager->persist($article);
             $entityManager->flush();
@@ -102,7 +103,6 @@ class ArticleController extends AbstractController
         return $this->render('article/ajouter.html.twig', [
             'article' => $article,
             'form' => $form->createView(),
-            'form_categorie' => $form_categorie->createView()
         ]);
     }
 
@@ -111,56 +111,78 @@ class ArticleController extends AbstractController
      */
     public function lire(Request $request, Article $article): Response
     {
+        // si aucun article trouvé
         if(!$article){
             throw $this->createNotFoundException("L\'article n\'a pas été trouvé");
         }
-
-
-        // récupère tous les commentaires liés à cet article
+        
+        // récupère tous les commentaires valides liés à cet article
         $commentaires = $this->getDoctrine()
                              ->getRepository(Commentaire::class)
                              ->findBy([
                                  'valide' => 1,
                                  'article' => $article
                              ]) ;
-        // Nouvelle instance de Commentaire, permet d'ajouter un categorie
-        $categorie = new Commentaire(); 
-        
-        // Instance du formulaire pour le categorie
-        $form_categorie = $this->createForm(CommentaireType::class, $categorie);
 
-        // Récupère les données passées au categorie
-        $form_categorie->handleRequest($request);
+                    
+        // Nouvelle instance de Commentaire, permet d'ajouter un commentaire
+        $commentaire = new Commentaire(); 
+        
+        // Instance du formulaire pour le commentaire
+        $form_commentaire = $this->createForm(CommentaireType::class, $commentaire);
+
+        // Récupère les données passées au commentaire
+        $form_commentaire->handleRequest($request);
 
         // Traitement du formulaire
-        if($form_categorie->isSubmitted() && $form_categorie->isValid()){
-            // Faire le lien entre le categorie et l'article
-            $categorie->setArticle($article);
-            $categorie->setValide(false);
-            // Intègre le categorie à la base
+        if($form_commentaire->isSubmitted() && $form_commentaire->isValid()){
+            // Faire le lien entre le commentaire et l'article
+            $commentaire->setArticle($article);
+            $commentaire->setValide(false);
+            // Intègre le commentaire à la base
             $em = $this->getDoctrine()->getManager();
-            $em->persist($categorie);
+            $em->persist($commentaire);
             $em->flush();
         }
 
         // Rendre la vue avec les paramètres
         return $this->render('article/lire.html.twig', [
             'article' => $article,
-            'form_categorie' => $form_categorie->createView(),
+            'form_commentaire' => $form_commentaire->createView(),
             'commentaires' => $commentaires,
-            
         ]);
     }
 
     /**
-     * @Route("/{id}/modifier", name="article_modifier", methods={"GET","POST"})
+     * @Route("/{id<\d+>}/modifier", name="article_modifier", methods={"GET","POST"})
      */
     public function modifier(Request $request, Article $article): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+
+             // On récupère les media transmis
+             $medias = $form->get('media')->getData();
+             // On boucle sur les images
+             foreach($medias as $media)
+             {
+                 // On génère un nouveau nom de fichier
+                 $fichier = md5(uniqid()) . '.' . $media->guessExtension();
+                 // On copie le fichier physique dans le dossier uploads
+                 $media->move(
+                     $this->getParameter('media_directory'),
+                     $fichier
+                 );
+                 // On stocke l'image dans la base de données (son nom)
+                 $img = new Media();
+                 $img->setNom($fichier);
+                 // on passe l'instance du media dans l'article
+                 $article->addMedium($img);
+ 
+             }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('article_lister');
@@ -177,7 +199,8 @@ class ArticleController extends AbstractController
      */
     public function supprimer(Request $request, Article $article): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) 
+        {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($article);
             $entityManager->flush();
@@ -185,4 +208,32 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('article_lister');
     }
+
+    /**
+     * @Route("/supprimer/media/{id}", name="media_supprimer", methods={"DELETE"})
+     */
+    public function supprimerMedia(Media $media, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        // On vérifie si le token est valide, qui s'appelle delete + id du media
+        if($this->isCsrfTokenValid('delete'.$media->getId(), $data['_token']))
+        {
+            // On récupère le nom du media pour pouvoir le supprimer physiquement
+            $nom = $media->getNom();
+            // On supprime le fichier logique
+            unlink($this->getParameter('media_directory').'/'.$nom);
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($media);
+            $em->flush();
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        }
+        else
+        {
+            // si le token n'est pas valide
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
+    }
+    
 }

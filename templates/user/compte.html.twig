@@ -1,0 +1,25 @@
+<div class="container">
+					<div class="row">
+						<div class="col-sm-4">
+							<ul class="nav flex-column">
+								<li class="nav-item">
+									<a class="nav-link active" href="{{ path('blog_profil', {'id': app.user.id}) }}">Mon compte</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('blog_profil_modifier', {'id': app.user.id}) }}">Modifier mes informations</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('blog_profil_articles', {'id': app.user.id}) }}">Mes articles</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('article_ajouter') }}">Rédiger un article</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('blog_forgot_password_request') }}">Changer mon mot de passe</a>
+								</li>
+
+							</ul>
+						</div>
+						<div class="col-sm-7">
+							{% block main %}{% endblock %}
+						</div>

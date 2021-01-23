@@ -1,12 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'page.html.twig' %}
 
 {% block title %}Contact{% endblock %}
 
 
 {% block body %}
-    <div class="page-contenu">
-    {% block header %}{% endblock %}
-    {% block main %}
+<div class="container">
     <h1>Bonjour {% if app.user %}{{ app.user.pseudo }}{% endif %}! ✅</h1>
 
     La page contact doit permettre de :
@@ -18,74 +16,5 @@
         <li>controller <code><a href="{{ 'D:/wamp64/www/blogvoyages/src/Controller/PageController.php'|file_link(0) }}">src/Controller/PageController.php</a></code></li>
         <li>template <code><a href="{{ 'D:/wamp64/www/blogvoyages/templates/page/contact.html.twig'|file_link(0) }}">templates/page/contact.html.twig</a></code></li>
     </ul>
-    {% endblock %}
-    {% block footer %}
-    <footer class="bg-dark text-white">
-                <!-- Grid container -->
-                <div class="container p-4">
-                    <!--Grid row-->
-                    <div class="row">
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Pied de page</h5>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis molestias. 
-                        sint!</p>
-                    </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 3</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-                    </div>
-                    <!--Grid row-->
-                </div>
-                <!-- Grid container -->
-                
-            </footer>
-    {% endblock %}
-    </div>
-
+</div>
 {% endblock %}

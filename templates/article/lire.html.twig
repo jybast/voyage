@@ -1,67 +1,67 @@
-{% extends 'base.html.twig' %}
+{% extends 'page.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}{{ article.titre }}{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
-
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ article.titre }}</td>
-            </tr>
-            <tr>
-                <th>Soustitre</th>
-                <td>{{ article.soustitre }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ article.slug }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ article.contenu|raw }}</td>
-            </tr>
-            <tr>
-                <th>Publié le</th>
-                <td>{{ article.publierAt ? article.publierAt|date('d/m/Y') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Modifié le</th>
-                <td>{{ article.modifierAt ? article.modifierAt|date('d/m/Y') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Valide</th>
-                <td>{{ article.valide ? 'Oui' : 'Non' }}</td>
-            </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="formulaire-lien">
+                <a href="{{ path('article_lister') }}">Retour à la liste</a>
+            </div>
+            <div class="formulaire-lien">
+                <a href="{{ path('article_modifier', {'id': article.id}) }}">Modifier l'article</a>
+            </div>
+            {#    {{ include('article/_supprimer_form.html.twig') }}    #}
+            <div class="titre-section">Catégories</div>
+            {% for categorie in article.categories %}
+              {{ categorie}} </br>
+            {% endfor %}
             
-        </tbody>
-    </table>
+            <div>
+                <div class="titre-section">Commentaires</div>
+                {% for commentaire in commentaires %}
+                    <p><i><small> Publié le {{ commentaire.publierAt | date('d/m/Y')}} par {{ commentaire.auteur }} </small></i></p>
+                    <p class="texte-article">{{ commentaire.contenu }}</p>
+                {% endfor %}
+            </div>
+            <div>
+                <div class="titre-section">Ajouter un commentaire</div>
+                {{ form(form_commentaire) }}
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="titre-article">{{ article.titre }}</div>
+            <div class="titre-section">{{ article.soustitre }}</div>
+            <div class="texte-article">{{ article.contenu|raw }}</div>
+            <div>
+                <div class="texte-publication texte-italique">
+                    Cet article a été publié le : {{ article.publierAt ? article.publierAt|date('d/m/Y') : '' }} et modifié le {{ article.modifierAt ? article.modifierAt|date('d/m/Y') : '' }}
+                </div>
+            </div>
+
+            <div class="fond-titre">
+		        <div id="container">
+		            <h1>{{ article.titre }}</h1>
+		            <h2><a href="#">{{ article.soustitre }} </a></h2>
+			
+                    <ul class="gallery">
+                        {% for media in article.media %}
+                        <li>
+                            <a href=""{{ asset('/uploads/' ~ media.nom) }}"" class="pic-{{ loop.index }}">
+                                <img src="{{ asset('/uploads/' ~ media.nom) }}" alt="{{ media.nom }}" title="{{ media.nom }}">
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+			
+		        </div>
+		    </div>
+        </div>
+    </div>
+    
+    
 
     
-    <a href="{{ path('article_lister') }}">Retour à la liste</a>
-
-    <a href="{{ path('article_modifier', {'id': article.id}) }}">Modifier l'article</a>
-
-    {{ include('article/_supprimer_form.html.twig') }}
-    </div>
-    <div>
-        <h3>Lire les commentaires</h3>
-        {% for commentaire in commentaires %}
-            <p><i><small> Publié le {{ commentaire.publierAt | date('d/m/Y')}} par {{ commentaire.auteur }} </small></i></p>
-            <p>{{ commentaire.contenu }}</p>
-            
-        {% endfor %}
-    </div>
-    <div>
-        <h3>Ajouter un commentaire</h3>
-        {{ form(form_commentaire) }}
-    </div>
-    <div>
 {% endblock %}

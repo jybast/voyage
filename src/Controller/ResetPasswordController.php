@@ -51,6 +51,13 @@ class ResetPasswordController extends AbstractController
             );
         }
 
+        // Si j'ai un utilisateur connecté
+        if ($this->getUser()) {
+            return $this->render('user/modifierPassword.html.twig', [
+                'requestForm' => $form->createView(),
+            ]);
+        }
+
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
         ]);

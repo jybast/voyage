@@ -1,0 +1,84 @@
+{% extends 'page.html.twig' %}
+
+{% block body %}
+<div class="container">
+	 {% for message in app.flashes('success') %}
+		<div class="alert alert-success" role="alert">{{ message }}</div>
+	{% endfor %}
+	<h1 class="titre-article">Page du profil de {{app.user.prenom}} {{ app.user.nom }} </h1>
+	<div class="row">
+		<div class="col-sm-3">
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a class="nav-link active" href="{{ path('blog_profil', {'id': app.user.id}) }}">Mon compte</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('user_profil_modifier', {'id': app.user.id}) }}">Modifier mes informations</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('user_profil_articles', {'id': app.user.id}) }}">Mes articles</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('article_ajouter') }}">Rédiger un article</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('blog_forgot_password_request') }}">Changer mon mot de passe</a>
+				</li>
+
+			</ul>
+		</div>
+
+		<div class="col-sm-9">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>Email</th>
+						<td>{{ app.user.email }}</td>
+					</tr>
+					
+					<tr>
+						<th>Pseudo</th>
+						<td>{{ app.user.pseudo }}</td>
+					</tr>
+					<tr>
+						<th>Nom</th>
+						<td>{{ app.user.nom }}</td>
+					</tr>
+					<tr>
+						<th>Prénom</th>
+						<td>{{ app.user.prenom }}</td>
+					</tr>
+					<tr>
+						<th>Ville</th>
+						<td>{{ app.user.ville }}</td>
+					</tr>
+					<tr>
+						<th>Code postal</th>
+						<td>{{ app.user.codepostal }}</td>
+					</tr>
+					<tr>
+						<th>Téléphone</th>
+						<td>{{ app.user.telephone }}</td>
+					</tr>
+					
+				</tbody>
+			</table>
+
+			
+			{% if (app.user.articles | length > 0)  %}
+				<h2 class="titre-article">Vous avez rédigé {{ app.user.articles | length}} article(s).</h2>
+				<p>dont voici la liste :</p>
+				{% for article in app.user.articles %}
+				<div>
+					{{ article.titre }} publié le  {{article.publierAt | date('d/m/Y')}}
+				</div>
+				
+				{% endfor %}
+			{% else %}
+				<h2 class="titre-article">Vous n'avez pas encore rédigé d'article.</h2>
+			{% endif %}
+		</div>
+
+	</div>
+</div>
+{% endblock %}

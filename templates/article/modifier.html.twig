@@ -1,13 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'page.html.twig' %}
 
 {% block title %}Modifier un article{% endblock %}
 
 {% block body %}
-    <h1>Modifier un article</h1>
+<div class="container">
+    <h1 class="titre-article">Modifier un article</h1>
 
     {{ include('article/_form.html.twig', {'button_label': 'Modifier'}) }}
 
     <a href="{{ path('article_lister') }}">Retour à la liste</a>
 
     {{ include('article/_supprimer_form.html.twig') }}
+</div>
+{% endblock %}
+
+{# bloc javascript pour le bouton supprimer des media #}
+{% block javasripts %}
+    <script src="{{ asset('assets/js/media.js') }}"></script>    
 {% endblock %}

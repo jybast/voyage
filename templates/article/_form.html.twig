@@ -1,4 +1,20 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
+
+    {# Si la route est "article_modifier" on affiche les images.
+      on vérifie que l'attribut de la route sur laquelle on est la bonne #}
+    {% if app.request.attributes.get('_route') == 'article_modifier' %}
+        {# on affiche la gallerie des media pour l'article #}
+        <h2> Galerie </h2>
+        {% for media in article.media  %}
+            <div class="galerie-conteneur">
+                <img src="{{ asset('/uploads/' ~ media.nom) }}" alt="image" width="150">
+                {# <a href="{{ path('media_supprimer', {'id': media.id} ) }}" data-delete data-token="{{ csrf_token('delete'~ media.id) }}"> Supprimer</a> #}
+                <a href="{{ path('media_delete', {'id': media.id} ) }}" {# data-delete data-token="{{ csrf_token('delete'~ media.id) }}#}" > Supprimer</a>
+            </div>
+        {% else %}
+            <div> <h5> Il n'y a pas de media </h5></div>
+        {% endfor %}
+    {% endif %}
     <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}

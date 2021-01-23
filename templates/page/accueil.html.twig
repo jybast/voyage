@@ -3,151 +3,67 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes() %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-    
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3 col-lg-3">
+			<div class="titre-secondaire">Bienvenue {% if app.user %}{{ app.user.pseudo }}{% endif %}!</div>
+			<h5>Il y a {{ actualites | length > 0 ? actualites | length ~  ' articles disponibles': 'aucun article disponible'}}.</h5>
+			
+			<div class="">
+				Je vous invite à partager les expériences de voyages et les bonnes idées sur l'organisation et la préparation de prochaines échappées.
+			</div>
+			<ul class="texte-normal">Menu : 
+				<li><a class="" href="">Afficher les trois derniers articles publiés</a></li>
+				<li><a class="" href="">Informations sur le site et ses auteurs</a></li>
+				<li><a class="" href="">Donner accès aux infos sur les mentions légales et la RGPD</a></li>
+				<li><a class="" href="{{ path('rechercher') }}">Rechercher un article</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-9 col-lg-9">
+			{# Affiche le message de succès après vérification de l'email #}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success" role="alert">{{ message }}</div>
+			{% endfor %}
+			{# Affiche les infos #}
+			
+			<h2 class="titre-article">Les derniers articles publiés</h2>
+			<div class="row">
+				<div class="card-deck">
+					{% for actualite in actualites %}
+					
+						<div class="card mb-4">
+							<div class="card-header">
+							<p>Catégorie :</p>
+							<p>
+								{% for categorie in actualite.categories %}
+									<small>{{ categorie.nom }} </small>
+								{% else %}
+									<small>Aucune catégorie!</small>
+								{% endfor %}
+							</p>
+							</div>
+							<div class="card-body">
+								<img src="{{ asset('assets/img/maroc.jpg') | imagine_filter('vignette')}}"  alt="{{ actualite.titre }}">
+								<h5 class="card-title">{{ actualite.titre }}</h5>
+								<p class="card-text">{{ actualite.contenu | slice(0, 150) | raw  }}</p>
+							</div>
+							<div class="card-footer text-muted">
+								<small>Publié le : {{ actualite.publierAt | date('d/m/Y') }}</small>
+								<p class="text-muted"><small><a href="{{path('article_lire', {'id': actualite.id})}}">Lire l'article </a></small></p>
+							</div>	
+						</div>
+						<div class="w-100 d-none d-sm-block d-md-none">
+							<!-- wrap every 2 on sm-->
+						</div>
 
-    {% block header %}{% endblock %}
-    {% block main %}
-    <div class="row">
-        <div class="col-sm-3 col-lg-3">
-            <p>aside</p>
-            <div class="row">
-                <p>menu contextuel</p>
-                <ul>
-                <li>Liste des articles</li>
-                <li>Liste des catégories</li>
-                <li>Rechercher un article</li>
-                <ul>
-                <li>Par mot clé</li>
-                <li>Par catégorie</li>
-                </ul>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-3 col-lg-8">
-            <h1>Bonjour {% if app.user %}{{ app.user.pseudo }}{% endif %}! ✅</h1>
-            {# Affiche le message de succès après vérification de l'email #}
-            {% for message in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">{{ message }}</div>
-            {% endfor %}
-            
-            <h2>Il y a {{ actualites | length > 0 ? actualites | length ~  'articles disponibles': 'aucun article disponible'}} .</h2>
-           
-            <p>Les derniers articles publiés</p>
-            {% for actualite in actualites %}
-                <div class="card mb-3" >
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{{ asset('ressources/img/maroc.jpg')}}" class="card-img" alt="Image de l'article">
-                            <p class="card-text"><small class="text-muted">Publié le : {{ actualite.publierAt | date('d/m/Y') }}</small></p>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-header">
-                                <h4 class="card-title">{{ actualite.titre }}</h5>
-                                <h6 class="card-title"><i>{{ actualite.soustitre }}</i></h6>
-                            </div>
-                            <div class="card-body">
-                                
-                                <p class="card-text">{{ actualite.contenu | slice(0, 150) | raw  }} </p>
-                                
-                            </div>
-                            <div class="card-footer">
-                                {% for categorie in actualite.categories %}
-                                    <p>Catégorie : {{ categorie.nom }} </p>
-                                    {% else %}
-                                    <tr>
-                                        <td colspan="10">Aucune catégorie affectée à l'article  !</td>
-                                    </tr>
-                                {% endfor %}
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <tr>
-                    <td colspan="10">Aucun article trouvé !</td>
-                </tr>
-            {% endfor %}
-
-            La page accueil doit permettre de :
-            <li>Afficher les trois derniers articles publiés</li>
-            <li>Informations sur le site et ses auteurs</li>
-            <li>Donner accès aux infos sur les mentions légales et la RGPD</li>
-                        
-        </div>
-    </div>
-    {% endblock %}
-    {% block footer %}
-    <footer class="bg-dark text-white">
-                <!-- Grid container -->
-                <div class="container p-4">
-                    <!--Grid row-->
-                    <div class="row">
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Pied de page</h5>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis molestias. 
-                        sint!</p>
-                    </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 3</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-                    <!--Grid column-->
-                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">Links</h5>
-                        <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="text-white">Link 1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-white">Link 2</a>
-                        </li>
-                        
-                        </ul>
-                    </div>
-                    <!--Grid column-->
-                    </div>
-                    <!--Grid row-->
-                </div>
-                <!-- Grid container -->
-                
-            </footer>
-    {% endblock %}
-
+					{% else %}
+					<div>
+						<h5>Aucun article trouvé !</h5>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

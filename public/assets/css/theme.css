@@ -1,0 +1,338 @@
+/*------------------------------------------------------------------
+[Feuille de styles du blog]
+
+Project     : Blog de voyage
+Version     : 1.0
+Modification:	
+Mise en page: Jean-Yves BASTARD
+Usage       : Open Source
+-------------------------------------------------------------------*/
+
+html, body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #151515;
+}
+
+.page-conteneur {
+	/* Le contenu est rogné si besoin pour s'inscrire dans la boîte de remplissage (padding) */
+    position: absolute;
+    background-color: gainsboro;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* ------ contenu de page ---------------*/
+
+.page-contenu {
+    margin: 5px;
+    padding: 5px;
+    background-color: gray;
+    
+}
+
+.page-header{
+    background-size: 100%;
+    background-position: top;
+    background-color: whitesmoke;
+    padding: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-image: url(../img/desert.jpg);
+}
+
+.titre-blog{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-weight: 700;
+    font-size: 3em;
+    line-height: 1.625;
+    padding-top: 10px;
+    color: rgb(192, 189, 29);
+    text-shadow: 6px 7px 8px #2e2727;
+}
+
+.titre-secondaire{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-size: 2em;
+    font-style: italic ;
+    color: rgb(148, 223, 191);;
+    text-shadow: 6px 7px 8px #2e2727;
+    padding: 5px;
+    margin-left: 40px;
+}
+
+.titre-article{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-size: 2em;
+    font-style: italic ;
+    color: #2e2727;
+    text-shadow: 6px 7px 8px #2e2727;
+    padding: 5px;
+    margin-left: 40px;
+}
+
+.titre-section{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-style: italic ;
+    color: #2e2727;
+    text-shadow: 6px 7px 8px #2e2727;
+    padding: 5px;
+    margin-left: 40px;
+}
+
+.texte-italique{
+    font-family: 'Comic sans MS', cursive;
+    color: seagreen;
+    font-style: italic ;
+}
+
+.texte-normal{
+    font-family: 'Comic sans MS', cursive;
+    color: black;
+    font-style: italic ;
+}
+
+.logo-container{
+    padding: 5px;
+}
+
+.logo{
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 100px;
+    float: left;
+}
+/* ----- Formulaires de login et inscription ------ */
+
+.formulaire_conteneur{
+    max-width: 540px;
+    padding-top: 8vh;
+    margin: 0 auto;
+    margin-bottom: 60px;
+}
+
+.formulaire_masque{
+    background: rgb(148, 223, 191);
+    padding: 30px 30px 20px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 4px;
+}
+
+.formulaire-inner{
+    padding: 10px;
+}
+
+.formulaire-logo {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.formulaire_titre{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-weight: 500;
+    font-size: 1.5em;
+    line-height: 1.625;
+    color: green;
+    text-shadow: 6px 7px 8px #2e2727;
+    text-align: center;
+}
+
+.formulaire-lien{
+    font-family: "Montserrat-Bold", sans-serif;
+    font-weight: 500;
+    font-size: 1em;
+    line-height: 1.625;
+    color: green;
+    text-shadow: 6px 7px 8px #2e2727;
+    text-align: center;
+}
+/* ------- page --------*/
+.bienvenue{
+    position: relative;
+    top: 5px;
+    padding: 5px;
+
+}
+
+.cadre_recherche{
+    position: absolute;
+    width: 90%;
+    left: 50%;
+    margin-top: 10px;
+    background-color: #c0f08a;
+}
+
+.article-conteneur{
+    width: 560px;
+    margin: 10px;
+    padding: 10px;
+    background-color: aquamarine;
+    box-shadow: 0 5px 8px rgba(0,0,0,0.2);
+}
+
+.article-header{
+    padding: 0;
+    margin: 0;
+}
+
+.article-body{
+    background-color: pink;
+}
+
+.article-titre{
+    text-align: center;
+    font-size: 18px;
+    margin: -20px -20px 20px;
+    padding: 15px 20px;
+    border-bottom: px solid #e6e6e6;
+    box-shadow: 2px 0 15px 0 #e6e6e6;
+}
+
+.article-texte{
+    font-size: 15px;
+}
+
+.article-footer{
+
+}
+
+.article-lien{
+
+}
+
+/* ----- Footer ----- */
+.pied-page{
+    padding: 5px;
+    background-color: #343a40;
+    color: #fff; 
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.texte-rouge{
+    color: red;
+}
+.text-pied{
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.6);
+}
+
+.copyright {
+    background-color: rgb(115, 235, 225);
+    color: white;
+}
+
+.copyright-text {
+    font-size: 14px;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    line-height: -webkit-calc(24/14);
+    line-height: -moz-calc(24/14);
+    line-height: calc(24/14);
+}
+
+/* --- Galerie d'images --- */
+.fond-gallery {
+	background: #959796 url(../img/texture_pierre_02.jpg);
+}
+
+.fond-titre {
+	background: #959796 url(../img/texture_pierre_02.jpg);
+}
+
+#container {
+	width: 600px; margin: 40px auto;
+	
+}
+
+h1 {
+	font: bold 45px/60px Helvetica, Arial, Sans-serif;
+    text-align: center; 
+    color: #eee;
+	text-shadow: 0px 2px 6px #333;
+}
+
+h2 a {
+    display: block; 
+    text-decoration: none; 
+    margin: 0 0 20px 0;
+	font: italic 25px Georgia, Times, Serif; 
+    text-align: center; 
+    color: #bfe1f1;
+	text-shadow: 0px 2px 6px #333;
+}
+	h2 a:hover {
+		color: #90bcd0;
+	}
+img {
+	width: 200px;
+	max-height: 250px;
+}
+
+ul {
+	overflow: hidden
+}
+
+ul.gallery { 
+	list-style: none;
+	
+}
+ul.gallery li a {
+	position: relative;
+	float: left;
+	padding: 10px 10px 30px 10px;
+	background: #eee;
+	border: 1px solid #fff;
+	-moz-box-shadow: 0px 2px 15px #333;
+}
+	
+	ul.gallery li a.pic-1 {
+		margin-top: 20px;
+		z-index: 1;
+		-webkit-transform: rotate(-10deg);
+ 		-moz-transform: rotate(-10deg);
+	}
+	ul.gallery li a.pic-2 {
+		margin-top: 20px;
+		z-index: 5;
+		-webkit-transform: rotate(-3deg);
+ 		-moz-transform: rotate(-3deg);
+	}
+	ul.gallery li a.pic-3 {
+		margin-right: 15px;
+		z-index: 3;
+		-webkit-transform: rotate(4deg);
+ 		-moz-transform: rotate(4deg);
+	}
+	ul.gallery li a.pic-4 {
+		z-index: 4;
+		-webkit-transform: rotate(14deg);
+ 		-moz-transform: rotate(14deg);
+	}
+	ul.gallery li a.pic-5 {
+		z-index: 2;
+		-webkit-transform: rotate(-12deg);
+ 		-moz-transform: rotate(-12deg);
+	}
+	ul.gallery li a.pic-6 {
+		z-index: 6;
+		-webkit-transform: rotate(5deg);
+ 		-moz-transform: rotate(5deg);
+	}
+	
+	ul.gallery li a:hover {
+		z-index: 10;
+		-moz-box-shadow: 3px 5px 15px #333;
+	}
+
+
+
+
+

@@ -73,10 +73,31 @@ class User implements UserInterface
      */
     private $commentaires;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $codepostal;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function __toString()
@@ -279,6 +300,70 @@ class User implements UserInterface
             if ($commentaire->getAuteur() === $this) {
                 $commentaire->setAuteur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCodepostal(): ?string
+    {
+        return $this->codepostal;
+    }
+
+    public function setCodepostal(?string $codepostal): self
+    {
+        $this->codepostal = $codepostal;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Article $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Article $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+            $favori->removeFavori($this);
         }
 
         return $this;

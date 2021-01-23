@@ -1,0 +1,13 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Gérer les catégories{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="titre-section">Ajouter une catégorie</div>
+
+    {{ include('categorie/_form.html.twig') }}
+
+    <a href="{{ path('categorie_index') }}">Retour à la liste</a>
+</div>
+{% endblock %}

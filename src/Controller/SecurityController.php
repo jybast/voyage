@@ -19,12 +19,38 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('blog_accueil');
         }
 
+
         // Si erreur
         $error = $authenticationUtils->getLastAuthenticationError();
         // dernier identifiant entré 
         $lastUsername = $authenticationUtils->getLastUsername();
+        // renvoie sur la page login avec info sur erreur
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername, 
+            'error' => $error
+            ]);
+    }
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+     /**
+     * @Route("/connecter", name="blog_connecter")
+     */
+    public function connecter(AuthenticationUtils $authenticationUtils): Response
+    {
+        // Si authentification est correcte, renvoie sur la page d'accueil
+        if ($this->getUser()) {
+            return $this->redirectToRoute('blog_accueil');
+        }
+
+        
+        // Si erreur
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // dernier identifiant entré 
+        $lastUsername = $authenticationUtils->getLastUsername();
+        // renvoie sur la page login avec info sur erreur
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername, 
+            'error' => $error
+            ]);
     }
 
     /**

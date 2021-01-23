@@ -27,8 +27,8 @@ security:
                 target: /
 
             form_login:
-                login_path: /login
-                check_path: /login
+                login_path: /
+                check_path: /
                 default_target_path: /
 
             # activate different ways to authenticate
@@ -40,5 +40,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # Pour acceder à la page administration il faut avoir le role ADMIN 
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        # Pour accéder à la page /profil il faut avoir un rôle et donc être connecté
+        - { path: ^/profil, roles: ROLE_USER }

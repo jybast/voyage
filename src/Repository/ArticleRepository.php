@@ -27,11 +27,37 @@ class ArticleRepository extends ServiceEntityRepository
     public function findBylastCreated()
     {
         return $this->createQueryBuilder('a')
+            ->andWhere('a.valide = :val')
+            ->setParameter('val', true)
             ->orderBy('a.publierAt', 'DESC')
             ->setMaxResults(3)
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * recherche les articles en fontion des critères passés dan sle formulaire de recherche
+     */
+    public function search($criteres = null, $categorie = null){
+        // Construire le queryBuilder
+        $query = $this->createQueryBuilder('a');
+        // on sélectionne les articles validés
+        $query->where('a.valide = 1');
+        // si des infos sont entrées dans le champs critères
+        if($criteres !== null ){
+            $query->andWhere('MATCH_AGAINST(a.titre, a.soustitre, a.contenu) AGAINST(:criteres boolean) > 0')
+                ->setParameter('criteres', $criteres);
+        }
+        // si une catégorie est sélectionnée
+        if($categorie !== null){
+            // jointure sur table categorie
+            $query->leftJoin('a.categories', 'c')
+                ->andWhere('c.id = :id')
+                ->setParameter('id', $categorie);
+        }
+
+        return $query->getQuery()->getResult();
     }
 
     // /**

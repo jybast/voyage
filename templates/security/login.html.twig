@@ -1,43 +1,56 @@
-{% extends 'page.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Connexion{% endblock %}
 
-{% block main %}
+{% block body %}
 <div class="formulaire_conteneur">
     <div class="formulaire_masque">
-        <div class="login-logo">
-            <a href="#"><img src="{{ asset('ressources/img/logo.png')| imagine_filter('miniature') }}  " alt="Logo"></a>
-        </div>
-        <h1 class="formulaire_titre">S'identifier</h1>
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
-            {% if app.user %}
-                <div class="mb-3">
-                    Vous êtes connecté en tant que  {{ app.user.username }}, <a href="{{ path('blog_logout') }}">Quitter</a>
+        <div class="row">
+            <div class="col">
+                <div class="formulaire-logo">
+                    <img src="{{ asset('assets/img/cc.png')| imagine_filter('vignette') }}  " alt="Logo">
                 </div>
-            {% endif %}
-
-            
-            <label for="inputEmail">Email</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-            <label for="inputPassword">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-            <input type="hidden" name="_csrf_token"
-                value="{{ csrf_token('authenticate') }}"
-            >
+            </div>
+            <div class="col">
+                <h1 class="formulaire_titre">S'identifier</h1>
+            </div>
+        </div>
         
-            <button class="btn btn-lg btn-primary" type="submit">S'identifier</button>
+        <div class="formulaire-inner">
+
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecté en tant que  {{ app.user.username }}, <a href="{{ path('blog_logout') }}">Quitter</a>
+                    </div>
+                {% endif %}
+
+                <hr>
+                <label for="inputEmail">Entrer votre adresse email : </label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+                <hr>
+                <label for="inputPassword">Entrer votre mot de passe : </label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                <input type="hidden" name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
+                <div class="text-center">
+                    <button class="btn btn-lg btn-success mt-3" type="submit">S'identifier</button>
+                </div>
+            </form>
+        </div>
+
             <div>
-                <a href="{{ path('blog_forgot_password_request') }}">Mot de passe oublié ?</a>
+                <a class="formulaire-lien" href="{{ path('blog_forgot_password_request') }}">Mot de passe oublié ?</a>
             </div>
             <div>
-                <a href="{{ path('blog_register') }}">Pas encore inscrit ?</a>
+                <a class="formulaire-lien" href="{{ path('blog_register') }}">Pas encore inscrit ?</a>
             </div>
-        </form>
     </div>
 </div>
 {% endblock %}

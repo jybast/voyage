@@ -3,6 +3,18 @@
 {% block title %}Changer le mot de passe{% endblock %}
 
 {% block body %}
-    <p>Un mail vous a été adressé pour changer le mot de passe. Le lien expire dans {{ tokenLifetime|date('g') }} heure(s).</p>
-    <p>Si vous n'avez pas reçu de mail vérifiez votre dossier spam ou  <a href="{{ path('blog_forgot_password_request') }}">Essayez  nouveau</a>.</p>
+<div class="container">
+    <div class="formulaire_conteneur">
+        <div class="formulaire_masque">
+            <div class="logo-container">
+                <img  class="logo" src="{{ asset('assets/img/logo-transparent.png')| imagine_filter('miniature') }}" alt="Logo">
+            </div>
+            <h2 class="formulaire_titre">Changer le mot de passe</h2>
+            <div>
+            <p>Un mail vous a été adressé pour changer le mot de passe. Le lien expire dans {{ tokenLifetime|date('g') }} heure(s).</p>
+            <p>Si vous n'avez pas reçu de mail vérifiez votre dossier spam ou  <a href="{{ path('blog_forgot_password_request') }}">Essayez  nouveau</a>.</p>
+            </div>
+        </div>
+    </div>    
+</div>    
 {% endblock %}

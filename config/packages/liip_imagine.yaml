@@ -6,6 +6,14 @@ liip_imagine:
     #jeux de filtres
     filter_sets:
         # chaque filtre reçoit un nom
+
+        # filtre pour incruster un logo 
+        logo:
+            quality: 75  		        #qualité de l'image (taux de compression)
+            filters: 		            # filtres à utiliser
+                thumbnail :             # faire une vignette
+                    size: [30, 30]      # retailler en hauteur et largeur
+                    mode: outbound
         
         # filtre pour incruster une photo miniature 
         miniature:
@@ -20,7 +28,7 @@ liip_imagine:
             quality: 85
             filters:
                 scale:
-                    dim: [250, 250]   #gère automatiquement soit la hauteur soit la largeur
+                    dim: [80, 80]   #gère automatiquement soit la hauteur soit la largeur
 
         # filtre pour une photo grand format en tête de page
         photo_page:

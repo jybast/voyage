@@ -1,18 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'page.html.twig' %}
 
 {% block title %}Ajouter un article{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Ajouter un article</h1>
-    <div>
+    {# <div>
         <h3>Affecter à une catégorie</h3>
         {{ form(form_categorie)}}
-    </div>
+    </div> #}
     {{ include('article/_form.html.twig') }}
     <div>
         <a href="{{ path('article_lister') }}">Retour à la liste</a>
     </div>
     
-
+</div>
     
 {% endblock %}

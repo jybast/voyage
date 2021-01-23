@@ -11,6 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * 
+ * @ORM\Table(name="Article", indexes={@ORM\Index(columns={"titre", "soustitre", "contenu"}, flags={"fulltext"})})
  */
 class Article
 {
@@ -66,7 +68,7 @@ class Article
     private $commentaires;
 
     /**
-     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="article")
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="article", cascade={"persist"})
      */
     private $media;
 
@@ -85,12 +87,18 @@ class Article
      */
     private $contenu;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->media = new ArrayCollection();
         $this->motcles = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -308,6 +316,32 @@ class Article
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(User $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(User $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+        }
 
         return $this;
     }

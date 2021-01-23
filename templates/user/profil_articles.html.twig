@@ -1,0 +1,15 @@
+{% extends 'page.html.twig' %}
+
+{% block main %}
+
+	<h1>Articles oubliés par 
+		{{app.user.prenom}}
+		{{ app.user.nom }}
+	</h1>
+	
+	{% for article in app.user.articles %}
+	<div>{{ app.article.titre }}</div>
+	<div>{{ app.article.contenu | raw }}</div>
+	{% endfor %}
+
+{% endblock %}
