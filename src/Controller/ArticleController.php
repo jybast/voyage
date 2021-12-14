@@ -58,6 +58,14 @@ class ArticleController extends AbstractController
     {
         // Nouvelle instance d'article
         $article = new Article();
+
+         // récupère tous les commentaires valides liés à cet article
+         $commentaires = $this->getDoctrine()
+         ->getRepository(Commentaire::class)
+         ->findBy([
+             'valide' => 1,
+             'article' => $article
+         ]) ;
         // Construction du formulaire
         $form = $this->createForm(ArticleType::class, $article);
         // Traitement des informations reçues

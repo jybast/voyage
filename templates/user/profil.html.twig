@@ -1,4 +1,4 @@
-{% extends 'page.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
 <div class="container">
@@ -67,18 +67,28 @@
 			
 			{% if (app.user.articles | length > 0)  %}
 				<h2 class="titre-article">Vous avez rédigé {{ app.user.articles | length}} article(s).</h2>
-				<p>dont voici la liste :</p>
+				<p class="text-muted">dont voici la liste :</p>
 				{% for article in app.user.articles %}
 				<div>
 					{{ article.titre }} publié le  {{article.publierAt | date('d/m/Y')}}
 				</div>
-				
+				{% for image in article.media %}
+					<img src="{{ asset('uploads/' ~ image.nom) | imagine_filter('vignette')}}" alt="{{ article.title }}">
+				{% endfor %}
 				{% endfor %}
 			{% else %}
 				<h2 class="titre-article">Vous n'avez pas encore rédigé d'article.</h2>
 			{% endif %}
 		</div>
+		{% if app.user.commentaires | length > 0 %}
+			{% for commentaire in app.user.commentaires %}
+				{{ commentaire.contenu}} publié le {{ commentaire.publierAt | date('d/m/Y')}}
+			{% endfor %}
 
+		{% else %}
+				<h2 class="titre-article">Vous n'avez pas encore rédigé de commentaire.</h2>
+		
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
